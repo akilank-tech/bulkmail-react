@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import axios from 'axios'
-import * as XLSX from 'xlsx' 
+import * as XLSX from 'xlsx'
 
 function App() {
   const [msg, setMsg] = useState('')
   const [status, setStatus] = useState(false)
-  const [emaillist,setEmailList]=useState([])
-
+  const [emaillist, setEmailList] = useState([])
+  const API = import.meta.env.VITE_API_URL
 
   const handleChange = (e) => {
     setMsg(e.target.value)
@@ -19,26 +19,26 @@ function App() {
     const reader = new FileReader()
     reader.onload = (e) => {
       const data = e.target.result
-      if (data){
+      if (data) {
         console.log(data)
       }
       const workbook = XLSX.read(data, { type: 'binary' })
-     const SheetName =workbook.SheetNames[0]
-     const worksheet = workbook.Sheets[SheetName]
-     console.log(worksheet)
-     const emaillist =XLSX.utils.sheet_to_json(worksheet,{header:'A'})
-    const totalemails = emaillist.map((item)=>{return(item.A)})
-    console.log(totalemails)
-    setEmailList(totalemails)
+      const SheetName = workbook.SheetNames[0]
+      const worksheet = workbook.Sheets[SheetName]
+      console.log(worksheet)
+      const emaillist = XLSX.utils.sheet_to_json(worksheet, { header: 'A' })
+      const totalemails = emaillist.map((item) => { return (item.A) })
+      console.log(totalemails)
+      setEmailList(totalemails)
     }
     reader.readAsArrayBuffer(file)
   }
 
   const send = () => {
-    
+
     // Implementation for sending emails
     setStatus(true)
-    axios.post("http://localhost:3000/sendemail", { msg: msg ,emaillist:emaillist})
+    axios.post(`${API}/sendemail`, { msg: msg, emaillist: emaillist })
       .then((data) => {
         if (data.data === true) {
           alert(" Email sent Successfully")
@@ -47,7 +47,7 @@ function App() {
           alert("Email not sent")
         }
       })
-      console.log("Message sent:",msg)
+    console.log("Message sent:", msg)
     setMsg('')
   }
 
