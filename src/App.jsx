@@ -24,7 +24,6 @@ function App() {
       }
       const workbook = XLSX.read(data, { type: 'binary' })
       const SheetName = workbook.SheetNames[0]
-      console.log(SheetName)
       const worksheet = workbook.Sheets[SheetName]
       console.log(worksheet)
       const emaillist = XLSX.utils.sheet_to_json(worksheet, { header: 'A' })
