@@ -6,7 +6,7 @@ function App() {
   const [msg, setMsg] = useState('')
   const [status, setStatus] = useState(false)
   const [emaillist, setEmailList] = useState([])
-  const API = import.meta.env.VITE_API_URL
+  const API = import.meta.env.VITE_API_URL ||"https://bulkmail-react-backend-1.onrender.com"
 
   const handleChange = (e) => {
     setMsg(e.target.value)
